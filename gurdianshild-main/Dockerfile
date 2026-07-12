@@ -1,0 +1,35 @@
+# Stage 1: Build the frontend
+FROM node:18-alpine AS frontend-builder
+WORKDIR /app/frontend
+
+# Copy frontend package files and install dependencies
+COPY frontend/package*.json ./
+RUN npm install
+
+# Copy frontend source and build it
+COPY frontend/ ./
+RUN npm run build
+
+# Stage 2: Build the backend and serve the full stack
+FROM node:18-alpine
+WORKDIR /app/backend
+
+# Copy backend package files and install dependencies
+COPY backend/package*.json ./
+RUN npm install
+
+# Copy Prisma schema and generate client
+COPY backend/prisma ./prisma
+RUN npx prisma generate
+
+# Copy the rest of the backend source code
+COPY backend/ ./
+
+# Copy the built frontend static files into the backend's public directory
+COPY --from=frontend-builder /app/frontend/dist ./public
+
+# Expose the port the app runs on (Render assigns this to process.env.PORT, default 5000)
+EXPOSE 5000
+
+# Start the server
+CMD ["npm", "start"]
