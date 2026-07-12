@@ -34,14 +34,10 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin like mobile apps or curl
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
+      // Allow all origins dynamically. This ensures that when the browser requests
+      // Vite's static assets (which have the crossorigin attribute), the request
+      // isn't blocked and the React app can load successfully.
+      callback(null, true);
     },
     credentials: true,
   })
