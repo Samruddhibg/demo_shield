@@ -31,5 +31,5 @@ COPY --from=frontend-builder /app/frontend/dist ./public
 # Expose the port the app runs on (Render assigns this to process.env.PORT, default 5000)
 EXPOSE 5000
 
-# Start the server
-CMD ["npm", "start"]
+# Start the server (Run migrations FIRST, then start Node)
+CMD ["sh", "-c", "npx prisma migrate deploy && npm start"]
