@@ -90,9 +90,15 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Fallback for React Router (Express 5 compatibility)
 app.use((req, res, next) => {
+  // If it's an API request, let the global error handler catch the 404
   if (req.originalUrl.startsWith("/api")) {
     return next();
   }
+  // If the request has a file extension (like .js, .css, .png), don't serve HTML
+  if (req.originalUrl.match(/\.[^/]+$/)) {
+    return next();
+  }
+  // Otherwise, it's a client-side route, so serve the React app
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 

@@ -16,7 +16,7 @@ export function SocketProvider({ children }) {
             return;
         }
 
-        const client = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000', {
+        const client = io(import.meta.env.VITE_SOCKET_URL || '/', {
             auth: { token },
             transports: ['websocket', 'polling'],
         });
