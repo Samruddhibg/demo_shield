@@ -33,6 +33,11 @@ jobs:
         working-directory: gurdianshild-main/backend
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/guardianshield
+          S3_BUCKET_NAME: guardianshield-test
+          S3_PREFIX: guardianshield/users
+          AWS_REGION: ap-south-1
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
         run: npm test
 
       - name: Install frontend dependencies
