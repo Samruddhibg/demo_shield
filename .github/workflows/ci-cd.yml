@@ -23,25 +23,25 @@ jobs:
           node-version: 20
           cache: npm
           cache-dependency-path: |
-            backend/package-lock.json
-            frontend/package-lock.json
+            gurdianshild-main/backend/package-lock.json
+            gurdianshild-main/frontend/package-lock.json
 
       - name: Install backend dependencies
-        working-directory: backend
+        working-directory: gurdianshild-main/backend
         run: npm ci --no-audit --no-fund
 
       - name: Run backend tests
-        working-directory: backend
+        working-directory: gurdianshild-main/backend
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/guardianshield
         run: npm test
 
       - name: Install frontend dependencies
-        working-directory: frontend
+        working-directory: gurdianshild-main/frontend
         run: npm ci --no-audit --no-fund
 
       - name: Build frontend
-        working-directory: frontend
+        working-directory: gurdianshild-main/frontend
         run: npm run build
 
   deploy:
